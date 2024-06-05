@@ -1,5 +1,3 @@
-Certainly! Below is a template for your gem's README.md file, including documentation on installation, usage, gem structure, and more. You can customize it with your gem's specific details.
-
 ```markdown
 # JWT Authentication Gem
 
@@ -111,7 +109,7 @@ jwt_authentication/
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [https://github.com/yourusername/jwt_authentication](https://github.com/yourusername/jwt_authentication). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/yourusername/jwt_authentication/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at [https://github.com/urielable/jwt_authentication](https://github.com/urielable/jwt_authentication). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/urielable/jwt_authentication/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -119,7 +117,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the JWT Authentication project's codebases, issue trackers, chat rooms, and mailing lists is expected to follow the [code of conduct](https://github.com/yourusername/jwt_authentication/blob/main/CODE_OF_CONDUCT.md).
-```
-
-Replace `yourusername` with your GitHub username and customize any other placeholders with your gem's specific details. This template provides a structured README with sections for installation, usage, gem structure, contributing, license, and code of conduct, which should cover the essential documentation needed for your gem.
+Everyone interacting in the JWT Authentication project's codebases, issue trackers, chat rooms, and mailing lists is expected to follow the [code of conduct](https://github.com/urielable/jwt_authentication/blob/main/CODE_OF_CONDUCT.md).
