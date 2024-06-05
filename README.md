@@ -1,34 +1,117 @@
-# JwtAuthentication
+Certainly! Below is a template for your gem's README.md file, including documentation on installation, usage, gem structure, and more. You can customize it with your gem's specific details.
 
-TODO: Delete this and the text below, and describe your gem
+```markdown
+# JWT Authentication Gem
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/jwt_authentication`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Gem Version](https://badge.fury.io/rb/jwt_authentication.svg)](https://badge.fury.io/rb/jwt_authentication)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+## Overview
+
+The JWT Authentication gem provides easy-to-use JWT authentication for Ruby on Rails applications. It allows you to quickly integrate JSON Web Token (JWT) authentication into your Rails API, providing secure user authentication without the need for session management.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem 'jwt_authentication'
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+And then execute:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```bash
+bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Automatic Migration Installation
 
-## Development
+Run the generator to copy the migrations to your application:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```bash
+rails generate jwt_authentication:install
+rails db:migrate
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Manual Migration Installation
+
+If you prefer not to use the generator, you can manually copy the migration file:
+
+1. Copy the migration file from `lib/generators/jwt_authentication/templates/create_users.rb` to your application's `db/migrate` directory.
+2. Ensure the migration file name has a timestamp to avoid conflicts. For example: `20230604010101_create_users.rb`.
+3. Run the migrations:
+
+```bash
+rails db:migrate
+```
+
+### Usage in Application
+
+#### Model
+
+Include the `Authenticatable` module in your `User` model:
+
+```ruby
+# app/models/user.rb
+class User < ApplicationRecord
+  include JwtAuthentication::Authenticatable
+end
+```
+
+#### Controller
+
+Use the authentication logic in your controllers:
+
+```ruby
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::API
+  before_action :authorize_request
+
+  private
+
+  def authorize_request
+    header = request.headers['Authorization']
+    header = header.split(' ').last if header
+    begin
+      @decoded = JwtAuthentication.decode(header)
+      @current_user = User.find(@decoded[:id])
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { errors: e.message }, status: :unauthorized
+    rescue JWT::DecodeError => e
+      render json: { errors: e.message }, status: :unauthorized
+    end
+  end
+end
+```
+
+## Gem Structure
+
+Here’s an overview of the file structure for your gem:
+
+```
+jwt_authentication/
+├── lib/
+│   ├── jwt_authentication/
+│   │   ├── authenticatable.rb
+│   │   ├── controllers/
+│   │   │   └── auth_controller.rb
+│   │   ├── generators/
+│   │   │   └── jwt_authentication/
+│   │   │       ├── install_generator.rb
+│   │   │       └── templates/
+│   │   │           └── create_users.rb
+│   │   ├── railtie.rb
+│   │   └── version.rb
+│   └── jwt_authentication.rb
+├── jwt_authentication.gemspec
+└── README.md
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jwt_authentication. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/jwt_authentication/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at [https://github.com/yourusername/jwt_authentication](https://github.com/yourusername/jwt_authentication). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/yourusername/jwt_authentication/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -36,4 +119,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the JwtAuthentication project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/jwt_authentication/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the JWT Authentication project's codebases, issue trackers, chat rooms, and mailing lists is expected to follow the [code of conduct](https://github.com/yourusername/jwt_authentication/blob/main/CODE_OF_CONDUCT.md).
+```
+
+Replace `yourusername` with your GitHub username and customize any other placeholders with your gem's specific details. This template provides a structured README with sections for installation, usage, gem structure, contributing, license, and code of conduct, which should cover the essential documentation needed for your gem.
