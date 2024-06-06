@@ -1,5 +1,3 @@
-Certainly! Here's how you can integrate the section for the tasks into your existing README.md:
-
 ```markdown
 # JWT Authentication Gem
 
