@@ -15,10 +15,11 @@ module JwtAuthentication
 
       # Implement the required interface for Rails::Generators::Migration.
       def self.next_migration_number(dirname)
-        if ActiveRecord::Base.connection.migration_context.timestamped_migrations
-          Time.now.utc.strftime("%Y%m%d%H%M%S")
+        if ActiveRecord::Base.connection.migration_context.migrations.any?
+          last_migration = ActiveRecord::Base.connection.migration_context.migrations.last.version
+          (last_migration + 1).to_s
         else
-          "%.3d" % (current_migration_number(dirname) + 1)
+          Time.now.utc.strftime("%Y%m%d%H%M%S")
         end
       end
     end
