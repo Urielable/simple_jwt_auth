@@ -99,12 +99,20 @@ def append_to_application_controller
     def generate_token(user_id)
       JWT.encode({ user_id: user_id }, Rails.application.secret_key_base)
     end
-
   CONTROLLER
 
-  # Append content to the file
-  File.open("app/controllers/application_controller.rb", "a") do |file|
-    file.puts application_controller_content
+  # Read the content of the existing file
+  existing_content = File.read("app/controllers/application_controller.rb")
+
+  # Find the index of the last "end" keyword
+  end_index = existing_content.rindex("end")
+
+  # Insert the new content before the last "end"
+  new_content = existing_content.insert(end_index, application_controller_content)
+
+  # Write the updated content back to the file
+  File.open("app/controllers/application_controller.rb", "w") do |file|
+    file.puts new_content
   end
 
   puts "Content appended to app/controllers/application_controller.rb"
