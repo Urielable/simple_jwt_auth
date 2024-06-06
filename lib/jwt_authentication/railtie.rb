@@ -11,7 +11,7 @@ module JwtAuthentication
     end
 
     generators do
-      require "jwt_authentication/generators/install_generator"
+      require "generators/install_generator"
     end
   end
 end
