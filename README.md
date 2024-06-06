@@ -1,3 +1,5 @@
+Certainly! Here's how you can integrate the section for the tasks into your existing README.md:
+
 ```markdown
 # JWT Authentication Gem
 
@@ -84,11 +86,20 @@ class ApplicationController < ActionController::API
 end
 ```
 
+### Task Generation
+
+To generate authentication resources in your Rails application, run:
+
+```bash
+rails generate jwt_authentication:generate_auth_resources
+```
+
+This will create a user model (`User`) and authentication controllers (`LoginController` and `SignupController`) in your application.
+
 ## Gem Structure
 
 Here’s an overview of the file structure for your gem:
 
-```
 jwt_authentication/
 ├── lib/
 │   ├── jwt_authentication/
@@ -100,12 +111,14 @@ jwt_authentication/
 │   │   │       ├── install_generator.rb
 │   │   │       └── templates/
 │   │   │           └── create_users.rb
+│   │   ├── tasks/
+│   │   │   └── jwt_authentication_tasks.rake
 │   │   ├── railtie.rb
 │   │   └── version.rb
 │   └── jwt_authentication.rb
 ├── jwt_authentication.gemspec
 └── README.md
-```
+
 
 ## Contributing
 
