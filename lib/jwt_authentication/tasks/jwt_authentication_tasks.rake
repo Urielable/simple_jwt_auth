@@ -72,9 +72,39 @@ def generate_signup_controller
   save_file("app/controllers/signup_controller.rb", signup_controller_file)
 end
 
-# Private method to generate JWT token
-def generate_token(user_id)
-  JWT.encode({ user_id: user_id }, Rails.application.secret_key_base)
+# Private method to append content to the application controller
+def append_to_application_controller
+  application_controller_content = <<~CONTROLLER
+    before_action :authorize_request
+
+    private
+
+    def authorize_request
+      header = request.headers['Authorization']
+      header = header.split(' ').last if header
+      begin
+        @decoded = JwtAuthentication.decode(header)
+        @current_user = User.find(@decoded[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        render json: { errors: e.message }, status: :unauthorized
+      rescue JWT::DecodeError => e
+        render json: { errors: e.message }, status: :unauthorized
+      end
+    end
+
+    # Private method to generate JWT token
+    def generate_token(user_id)
+      JWT.encode({ user_id: user_id }, Rails.application.secret_key_base)
+    end
+
+  CONTROLLER
+
+  # Append content to the file
+  File.open("app/controllers/application_controller.rb", "a") do |file|
+    file.puts application_controller_content
+  end
+
+  puts "Content appended to app/controllers/application_controller.rb"
 end
 
 # Private method to save content to a file
