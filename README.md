@@ -88,7 +88,7 @@ end
 To generate authentication resources in your Rails application, run:
 
 ```bash
-rails generate jwt_authentication:generate_auth_resources
+rails jwt_authentication:generate_auth_resources
 ```
 
 This will create a user model (`User`) and authentication controllers (`LoginController` and `SignupController`) in your application.
