@@ -1,71 +1,93 @@
+# lib/tasks/jwt_authentication_tasks.rake
+
 namespace :jwt_authentication do
-  desc "Generate authentication models and controllers for login and signup"
-  task :generate_auth_resources do
-    # Generate the user model
+  desc "Generates authentication models and controllers for login and signup"
+  task generate_auth_resources: :environment do
+    # Generate User model
     generate_user_model
 
-    # Generate the authentication controllers
+    # Generate authentication controllers
     generate_login_controller
     generate_signup_controller
   end
 end
 
-# Private method to generate the user model
+# Private method to generate the User model
 def generate_user_model
-  # User model file
   user_model_file = <<~MODEL
     # app/models/user.rb
     class User < ApplicationRecord
       include JwtAuthentication::Authenticatable
-
       # Add your user model associations, validations, etc. here
     end
   MODEL
 
   # Save the content to the file
-  File.open("app/models/user.rb", "w") do |file|
-    file.puts user_model_file
-  end
-
-  puts "User model created in app/models/user.rb"
+  save_file("app/models/user.rb", user_model_file)
 end
 
 # Private method to generate the login controller
 def generate_login_controller
-  # Login controller file
   login_controller_file = <<~CONTROLLER
     # app/controllers/login_controller.rb
     class LoginController < ApplicationController
       def create
-        # Implement login logic here
+        user = User.find_by(email: params[:email])
+        if user&.authenticate(params[:password])
+          render json: { token: generate_token(user.id) }
+        else
+          render json: { error: "Invalid email or password" }, status: :unauthorized
+        end
       end
     end
   CONTROLLER
 
   # Save the content to the file
-  File.open("app/controllers/login_controller.rb", "w") do |file|
-    file.puts login_controller_file
-  end
-
-  puts "Login controller created in app/controllers/login_controller.rb"
+  save_file("app/controllers/login_controller.rb", login_controller_file)
 end
 
 # Private method to generate the signup controller
 def generate_signup_controller
-  # Signup controller file
   signup_controller_file = <<~CONTROLLER
     # app/controllers/signup_controller.rb
     class SignupController < ApplicationController
       def create
-        # Implement signup logic here
+        user = User.new(user_params)
+        if user.save
+          render json: { token: generate_token(user.id) }, status: :created
+        else
+          render json: { error: user.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
+      private
+
+      def user_params
+        params.require(:user).permit(:email, :password, :password_confirmation)
       end
     end
   CONTROLLER
 
   # Save the content to the file
-  File.open("app/controllers/signup_controller.rb", "w") do |file|
-    file.puts signup_controller_file
+  save_file("app/controllers/signup_controller.rb", signup_controller_file)
+end
+
+# Private method to generate JWT token
+def generate_token(user_id)
+  JWT.encode({ user_id: user_id }, Rails.application.secret_key_base)
+end
+
+# Private method to save content to a file
+def save_file(file_path, content)
+  if File.exist?(file_path)
+    print "File '#{file_path}' already exists. Do you want to overwrite it? (y/n): "
+    answer = $stdin.gets.chomp
+    return unless answer.downcase == 'y'
   end
 
-  puts "Signup controller created in app/controllers/signup_controller.rb"
+  File.open(file_path, "w") do |file|
+    file.puts content
+  end
+
+  puts "File '#{file_path}' created"
 end
