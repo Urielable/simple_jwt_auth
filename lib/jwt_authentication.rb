@@ -4,7 +4,6 @@ require_relative "jwt_authentication/version"
 require "jwt_authentication/authenticatable"
 require "jwt_authentication/controllers/auth_controller"
 require "jwt_authentication/railtie" if defined?(Rails)
-require "jwt_authentication/tasks/jwt_authentication_tasks" 
 
 require 'jwt'
 require 'bcrypt'
