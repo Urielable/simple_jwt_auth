@@ -7,7 +7,7 @@ module JwtAuthentication
     railtie_name :jwt_authentication
 
     rake_tasks do
-      load "tasks/jwt_authentication_tasks.rake"
+      load "jwt_authentication/tasks/jwt_authentication_tasks.rake"
     end
 
     generators do
