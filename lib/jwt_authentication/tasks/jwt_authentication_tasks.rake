@@ -9,6 +9,9 @@ namespace :jwt_authentication do
     # Generate authentication controllers
     generate_login_controller
     generate_signup_controller
+
+    # Append application controller content
+    append_to_application_controller
   end
 end
 
