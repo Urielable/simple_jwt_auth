@@ -78,27 +78,27 @@ end
 # Private method to append content to the application controller
 def append_to_application_controller
   application_controller_content = <<~CONTROLLER
-    before_action :authorize_request
+      before_action :authorize_request
 
-    private
+      private
 
-    def authorize_request
-      header = request.headers['Authorization']
-      header = header.split(' ').last if header
-      begin
-        @decoded = JwtAuthentication.decode(header)
-        @current_user = User.find(@decoded[:id])
-      rescue ActiveRecord::RecordNotFound => e
-        render json: { errors: e.message }, status: :unauthorized
-      rescue JWT::DecodeError => e
-        render json: { errors: e.message }, status: :unauthorized
+      def authorize_request
+        header = request.headers['Authorization']
+        header = header.split(' ').last if header
+        begin
+          @decoded = JwtAuthentication.decode(header)
+          @current_user = User.find(@decoded[:id])
+        rescue ActiveRecord::RecordNotFound => e
+          render json: { errors: e.message }, status: :unauthorized
+        rescue JWT::DecodeError => e
+          render json: { errors: e.message }, status: :unauthorized
+        end
       end
-    end
 
-    # Private method to generate JWT token
-    def generate_token(user_id)
-      JWT.encode({ user_id: user_id }, Rails.application.secret_key_base)
-    end
+      # Private method to generate JWT token
+      def generate_token(user_id)
+        JWT.encode({ user_id: user_id }, Rails.application.secret_key_base)
+      end
   CONTROLLER
 
   # Read the content of the existing file
