@@ -1,4 +1,3 @@
-```markdown
 # JWT Authentication Gem
 
 [![Gem Version](https://badge.fury.io/rb/jwt_authentication.svg)](https://badge.fury.io/rb/jwt_authentication)
