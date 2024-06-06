@@ -95,8 +95,8 @@ This will create a user model (`User`) and authentication controllers (`LoginCon
 
 ## Gem Structure
 
-Here’s an overview of the file structure for your gem:
-
+Here’s an overview of the file structure for gem:
+```
 jwt_authentication/
 ├── lib/
 │   ├── jwt_authentication/
@@ -115,7 +115,7 @@ jwt_authentication/
 │   └── jwt_authentication.rb
 ├── jwt_authentication.gemspec
 └── README.md
-
+```
 
 ## Contributing
 
