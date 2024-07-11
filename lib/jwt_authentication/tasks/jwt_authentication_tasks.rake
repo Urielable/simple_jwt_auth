@@ -132,7 +132,6 @@ end
 # Private method to append routes to routes.rb
 def append_to_routes
   routes_content = <<~ROUTES
-
     # Routes for authentication
     post 'signup', to: 'signup#create'
     post 'login', to: 'login#create'
@@ -141,12 +140,20 @@ def append_to_routes
   # Read the content of the existing routes file
   existing_content = File.read("config/routes.rb")
 
-  # Append the new routes content
-  new_content = existing_content + routes_content
+  # Check if the routes are already present
+  unless existing_content.include?("post 'signup', to: 'signup#create'") && existing_content.include?("post 'login', to: 'login#create'")
+    # Find the index of the last "end" keyword in the routes file
+    end_index = existing_content.rindex("end")
 
-  # Write the updated content back to the file
-  save_file("config/routes.rb", new_content)
-  puts "Routes added to config/routes.rb"
+    # Insert the new routes before the last "end"
+    new_content = existing_content.insert(end_index, routes_content)
+
+    # Write the updated content back to the file
+    save_file("config/routes.rb", new_content)
+    puts "Routes added to config/routes.rb"
+  else
+    puts "Routes already exist in config/routes.rb"
+  end
 end
 
 # Helper method to save file content
