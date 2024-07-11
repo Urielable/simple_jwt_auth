@@ -23,6 +23,17 @@ bundle install
 
 ## Usage
 
+
+### Task Generation
+
+To generate authentication resources in your Rails application, run:
+
+```bash
+rails jwt_authentication:generate_auth_resources
+```
+
+This will create a user model (`User`) and authentication controllers (`LoginController` and `SignupController`) in your application.
+
 ### Automatic Migration Installation
 
 Run the generator to copy the migrations to your application:
@@ -80,18 +91,14 @@ class ApplicationController < ActionController::API
       render json: { errors: e.message }, status: :unauthorized
     end
   end
+
+  # Private method to generate JWT token
+  def generate_token(user_id)
+    JWT.encode({ user_id: user_id }, Rails.application.secret_key_base)
+  end
 end
 ```
 
-### Task Generation
-
-To generate authentication resources in your Rails application, run:
-
-```bash
-rails jwt_authentication:generate_auth_resources
-```
-
-This will create a user model (`User`) and authentication controllers (`LoginController` and `SignupController`) in your application.
 
 ## Gem Structure
 
