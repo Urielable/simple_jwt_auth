@@ -8,7 +8,7 @@ namespace :jwt_authentication do
 
     # Generate authentication controllers
     generate_login_controller
-    generate_signup_controller
+    generate_sign_up_controller
 
     # Append application controller content
     append_to_application_controller
@@ -23,11 +23,11 @@ def generate_user_model
   user_model_file = <<~MODEL
     # app/models/user.rb
     class User < ApplicationRecord
-      include JwtAuthentication::Authenticatable
 
       has_secure_password
 
-      validates :username, presence: true, uniqueness: true
+      validates :name, presence: false
+      validates :last_name, presence: false
       validates :email, presence: true, uniqueness: true
       validates :password, presence: true, length: { minimum: 6 }
     end
@@ -61,10 +61,10 @@ def generate_login_controller
 end
 
 # Private method to generate the Signup controller
-def generate_signup_controller
+def generate_sign_up_controller
   signup_controller_file = <<~CONTROLLER
-    # app/controllers/signup_controller.rb
-    class SignupController < ApplicationController
+    # app/controllers/sign_up_controller.rb
+    class SignUpController < ApplicationController
       skip_before_action :authorize_request, only: :create
 
       def create
@@ -84,7 +84,7 @@ def generate_signup_controller
     end
   CONTROLLER
 
-  save_file("app/controllers/signup_controller.rb", signup_controller_file)
+  save_file("app/controllers/sign_up_controller.rb", signup_controller_file)
   puts "Signup controller created in app/controllers/signup_controller.rb"
 end
 
@@ -133,7 +133,7 @@ end
 def append_to_routes
   routes_content = <<~ROUTES
     # Routes for authentication
-    post 'signup', to: 'signup#create'
+    post 'signup', to: 'sign_up#create'
     post 'login', to: 'login#create'
   ROUTES
 
