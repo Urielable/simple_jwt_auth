@@ -29,7 +29,14 @@ bundle install
 To generate authentication resources in your Rails application, run:
 
 ```bash
+# Generate authentication resources (models, controllers, append to application controller)
 rails jwt_authentication:generate_auth_resources
+
+# Add routes for signup and login
+rails jwt_authentication:add_routes
+
+# Generate tests for signup and login
+rails jwt_authentication:generate_tests
 ```
 
 This will create a user model (`User`) and authentication controllers (`LoginController` and `SignupController`) in your application.
@@ -99,6 +106,30 @@ class ApplicationController < ActionController::API
 end
 ```
 
+## Testing
+
+To ensure that the authentication functionality works correctly, we have included RSpec tests for the `SignupController` and `LoginController`. Follow the steps below to run the tests:
+
+### Prerequisites
+
+Make sure you have RSpec installed in your Rails application. If RSpec is not already installed, add it to your Gemfile:
+
+```ruby
+# Gemfile
+group :development, :test do
+  gem 'rspec-rails', '~> 4.0.0'
+end
+```
+
+Install gems: 
+```
+bundle install
+rails generate rspec:install
+```
+
+Running the Tests
+
+The tests for the authentication functionality are located in the spec/controllers directory. 
 
 ## Gem Structure
 
