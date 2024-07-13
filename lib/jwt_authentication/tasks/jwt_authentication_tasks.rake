@@ -9,6 +9,7 @@ namespace :jwt_authentication do
     if defined?(RSpec)
       Rake::Task['jwt_authentication:generate_rspec_tests'].invoke
     elsif defined?(MiniTest::Unit::TestCase)
+      Rake::Task['jwt_authentication:generate_fixtures'].invoke
       Rake::Task['jwt_authentication:generate_minitest_tests'].invoke
     else
       puts "No recognized testing framework found. Please install RSpec or MiniTest."

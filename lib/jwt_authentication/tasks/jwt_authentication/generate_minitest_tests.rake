@@ -37,6 +37,9 @@ namespace :jwt_authentication do
       require 'test_helper'
 
       class LoginControllerTest < ActionDispatch::IntegrationTest
+        # Load fixtures
+        fixtures :users
+
         setup do
           @user = users(:one)
         end
@@ -58,5 +61,21 @@ namespace :jwt_authentication do
     save_file("test/controllers/signup_controller_test.rb", signup_test_file)
     save_file("test/controllers/login_controller_test.rb", login_test_file)
     puts "MiniTest tests for signup and login created in test/controllers/"
+  end
+
+  # Helper method to save file content
+  def save_file(file_path, content)
+    if File.exist?(file_path)
+      puts "#{file_path} already exists. Do you want to overwrite it? (yes/no)"
+      answer = STDIN.gets.chomp
+      if answer.downcase != 'yes'
+        puts "Skipping #{file_path}"
+        return
+      end
+    end
+
+    File.open(file_path, "w") do |file|
+      file.puts content
+    end
   end
 end
