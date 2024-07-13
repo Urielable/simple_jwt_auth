@@ -4,6 +4,7 @@ namespace :jwt_authentication do
   desc "Generate MiniTest tests for signup and login"
   task generate_minitest_tests: :environment do
     generate_minitest_auth_tests
+    Rake::Task['jwt_authentication:create_test_user'].invoke
   end
 
   # Private method to generate MiniTest tests for signup and login

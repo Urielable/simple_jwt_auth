@@ -34,9 +34,6 @@ rails jwt_authentication:generate_auth_resources
 
 # Add routes for signup and login
 rails jwt_authentication:add_routes
-
-# Generate tests for signup and login
-rails jwt_authentication:generate_tests
 ```
 
 This will create a user model (`User`) and authentication controllers (`LoginController` and `SignupController`) in your application.
@@ -108,7 +105,23 @@ end
 
 ## Testing
 
-To ensure that the authentication functionality works correctly, we have included RSpec tests for the `SignupController` and `LoginController`. Follow the steps below to run the tests:
+To ensure that the authentication functionality works correctly, we have included tests for the `SignupController` and `LoginController`. Follow the steps below to run the tests.
+
+RSpec:
+
+```bash
+# Generate tests for signup and login with RSpec
+rails jwt_authentication:generate_rspec_tests
+
+```
+
+Minitest:
+
+```bash
+# Generate tests for signup and login with MiniTest
+rails jwt_authentication:generate_minitest_tests
+```
+
 
 ### Prerequisites
 

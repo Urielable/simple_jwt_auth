@@ -1,13 +1,14 @@
-# lib/tasks/jwt_authentication/generate_tests.rake
+# lib/generators/jwt_authentication/generate_rspec_tests.rake
 
 namespace :jwt_authentication do
-  desc "Generate tests for signup and login"
-  task generate_tests: :environment do
-    generate_auth_tests
+  desc "Generate RSpec tests for signup and login"
+  task generate_rspec_tests: :environment do
+    generate_rspec_auth_tests
+    Rake::Task['jwt_authentication:create_test_user'].invoke
   end
 
-  # Private method to generate tests for signup and login
-  def generate_auth_tests
+  # Private method to generate RSpec tests for signup and login
+  def generate_rspec_auth_tests
     signup_test_file = <<~TEST
       # spec/controllers/signup_controller_spec.rb
       require 'rails_helper'
@@ -74,22 +75,6 @@ namespace :jwt_authentication do
 
     save_file("spec/controllers/signup_controller_spec.rb", signup_test_file)
     save_file("spec/controllers/login_controller_spec.rb", login_test_file)
-    puts "Signup and login tests created in spec/controllers/"
-  end
-
-  # Helper method to save file content
-  def save_file(file_path, content)
-    if File.exist?(file_path)
-      puts "#{file_path} already exists. Do you want to overwrite it? (yes/no)"
-      answer = STDIN.gets.chomp
-      if answer.downcase != 'yes'
-        puts "Skipping #{file_path}"
-        return
-      end
-    end
-
-    File.open(file_path, "w") do |file|
-      file.puts content
-    end
+    puts "RSpec tests for signup and login created in spec/controllers/"
   end
 end
