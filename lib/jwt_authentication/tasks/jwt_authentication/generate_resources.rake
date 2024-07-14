@@ -22,8 +22,8 @@ namespace :jwt_authentication do
 
         has_secure_password
 
-        validates :name, presence: true, uniqueness: true
-        validates :last_name, presence: true, uniqueness: true
+        validates :name, presence: true, uniqueness: false
+        validates :last_name, presence: true, uniqueness: false
         validates :email, presence: true, uniqueness: true
         validates :password, presence: true, length: { minimum: 6 }
 
