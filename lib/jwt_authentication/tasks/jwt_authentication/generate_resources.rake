@@ -26,6 +26,12 @@ namespace :jwt_authentication do
         validates :username, presence: true, uniqueness: true
         validates :email, presence: true, uniqueness: true
         validates :password, presence: true, length: { minimum: 6 }
+
+        # Add this class method to create password digests
+        def self.digest(string)
+          cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+          BCrypt::Password.create(string, cost: cost)
+        end
       end
     MODEL
 

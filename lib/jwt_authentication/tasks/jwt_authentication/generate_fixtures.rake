@@ -11,12 +11,12 @@ namespace :jwt_authentication do
     users_fixture = <<~FIXTURE
       # test/fixtures/users.yml
       one:
-        username: testuser
+        name: testuser
         email: test@example.com
         password_digest: <%= User.digest('password') %>
 
       two:
-        username: anotheruser
+        name: anotheruser
         email: another@example.com
         password_digest: <%= User.digest('password') %>
     FIXTURE

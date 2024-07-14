@@ -119,6 +119,7 @@ Minitest:
 
 ```bash
 # Generate tests for signup and login with MiniTest
+rails jwt_authentication:generate_fixtures
 rails jwt_authentication:generate_minitest_tests
 ```
 
