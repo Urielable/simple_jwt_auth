@@ -19,7 +19,6 @@ namespace :jwt_authentication do
     user_model_file = <<~MODEL
       # app/models/user.rb
       class User < ApplicationRecord
-        include JwtAuthentication::Authenticatable
 
         has_secure_password
 
